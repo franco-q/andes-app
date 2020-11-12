@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 24.0.2, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 viewBox="0 0 100 100" style="enable-background:new 0 0 100 100;" xml:space="preserve">
+<g>
+	<g>
+		<defs>
+			<circle id="SVGID_3_" cx="50" cy="50" r="48"/>
+		</defs>
+		<clipPath id="SVGID_1_">
+			<use xlink:href="#SVGID_3_"  style="overflow:visible;"/>
+		</clipPath>
+		<g style="clip-path:url(#SVGID_1_);">
+			<g>
+				<path style="fill:#FFFFFF;" d="M-8,68.9L5.2,52.3l5,3.8l20.2-24.5l5.2,4.7l14.2-18.1L64.2,36l5.5-4.1l14.9,19.4l10.7,2.2
+					l13.2,17.4c0,0-11.2,14.8-27.9,23.4c-16.4,8.5-45.9,4.9-45.9,4.9l20.1-44.5L48,43.5l1.9-18.7L29.5,50.1l1.3-12.5L11.1,61.7
+					l-5.5-5l-9.4,13.1L-8,68.9z"/>
+				<polygon points="63.5,41 69.4,36.7 70.3,53.2 				"/>
+				<polygon points="81,53.2 92.4,56.4 85.6,62.3 				"/>
+			</g>
+			<polygon style="opacity:0.3;fill:#FFFFFF;" points="54,44.7 69.6,35.1 75.7,48 93.7,55.9 93.3,62 83.2,64.6 60.8,56.8 			"/>
+		</g>
+	</g>
+	<path style="fill:#D02C2F;" d="M50,98.8C23.1,98.8,1.3,76.9,1.3,50S23.1,1.3,50,1.3S98.8,23.1,98.8,50S76.9,98.8,50,98.8z M50,2.7
+		C23.9,2.7,2.7,23.9,2.7,50S23.9,97.3,50,97.3S97.3,76.1,97.3,50S76.1,2.7,50,2.7z"/>
+</g>
+</svg>
