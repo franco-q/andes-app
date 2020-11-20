@@ -62,7 +62,7 @@ export default function ({ onLogin }) {
 	const checkIt = () => {
 		if (name && age && city && email) {
 			setCheck(true)
-			onLogin({name, age, city, email})
+			onLogin({ name, age, city, email })
 		}
 	}
 

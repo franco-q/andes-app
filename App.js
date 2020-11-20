@@ -1,5 +1,5 @@
 import React, { useRef, useEffect, useState } from 'react'
-import { StatusBar, View, Text, StyleSheet, PermissionsAndroid } from 'react-native'
+import { StatusBar, View, Text, StyleSheet, PermissionsAndroid, NativeModules } from 'react-native'
 import Login from './components/Login'
 import Flow from './components/Flow'
 import { Row, Grid } from 'react-native-easy-grid'
@@ -61,44 +61,54 @@ PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE
 	})
 
 const App = () => {
-	const [step, setStep] = useState(0)
-	const [bg, setBg] = useState(back_mountains)
 	const $Img = useRef()
-	const $wrap = useRef()
-	const $Login = useRef()
+	const $Main = useRef()
+
+	const [bg, setBg] = useState(back_mountains)
 	const [userData, setUserData] = useState({})
 	const [play, setPlay] = useState(false)
 	const [bgColor, setBgColor] = useState('#D02C2F')
 
-	const login = data => {
-		setUserData(data)
-		$Img.current.fadeOut(300).then(() => {
-			$Login.current.fadeOutDown(300).then(() => {
-				setPlay(true)
-			})
+	const login = ({ name, age, city, email }) => {
+		setUserData({ name, age, city, email })
+		NativeModules.AndesHelperModule.saveData([name, age, city, email].join(','), () => {})
+		$Img.current.fadeOut(200).then(() => {})
+		$Main.current.fadeOutDown(200).then(() => {
+			setPlay(true)
 		})
 	}
 
 	const setMountain = bg => {
-		setBg(bg)
-		$Img.current.fadeIn(700)
+		if (bg) {
+			setBg(bg)
+			$Img.current.fadeIn(500)
+		} else {
+			$Img.current.fadeOut(200)
+		}
+	}
+
+	const end = () => {
+		setMountain(back_mountains)
+		setUserData({})
+		setPlay(false)
+		setBgColor('#D02C2F')
 	}
 
 	useEffect(() => {
 		if (play) {
 			setBgColor('#111111')
-			$Login.current.fadeInDown(200)
+			$Main.current.fadeInDown(100)
 		}
 	}, [play])
 
 	return (
 		<View>
+			<StatusBar hidden={true} />
 			<Animatable.View
-				transition={['backgroundColor']}
+				transition="backgroundColor"
 				style={{ backgroundColor: bgColor, position: 'relative' }}
 				duration={500}
 				delay={1}>
-				<StatusBar hidden={true} />
 				<Animatable.Image
 					ref={$Img}
 					source={bg}
@@ -112,19 +122,15 @@ const App = () => {
 					}}
 				/>
 				<View style={style.main}>
-					<GridAnimatable ref={$Login}>
+					<GridAnimatable ref={$Main} delay={1}>
 						<Row style={style.header}>{!play && <Brand width={90} height={20} />}</Row>
-						<GridAnimatable>
+						<Row>
 							{play ? (
-								<Row>
-									<Flow userData={userData} setBg={setMountain} />
-								</Row>
+								<Flow userData={userData} setBg={setMountain} onEnd={end} />
 							) : (
-								<Row>
-									<Login onLogin={login} />
-								</Row>
+								<Login onLogin={login} />
 							)}
-						</GridAnimatable>
+						</Row>
 					</GridAnimatable>
 					<View style={style.footer}>
 						<Text style={style.footerTxt}>

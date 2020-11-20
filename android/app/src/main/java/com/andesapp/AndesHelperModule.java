@@ -5,17 +5,23 @@ import android.content.pm.PackageManager;
 import android.media.AudioFormat;
 import android.media.AudioManager;
 import android.media.AudioRecord;
+import android.os.Build;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.core.app.ActivityCompat;
 
+import com.facebook.react.bridge.Callback;
 import com.facebook.react.bridge.NativeModule;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.util.Map;
 import java.util.HashMap;
 
@@ -86,6 +92,34 @@ public class AndesHelperModule extends ReactContextBaseJavaModule {
             }
             deleteSLEngine();
             isPlaying = false;
+        }
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+    @ReactMethod
+    public void saveData(String row, Callback cb) {
+
+        File carpeta = getReactApplicationContext().getExternalFilesDir(null);
+        String usersCSVFile = carpeta.toString() + "/" + "Usuarios.csv";
+
+        if(!carpeta.exists()) {
+            carpeta.mkdir();
+        }
+
+        try {
+
+            FileOutputStream fos = new FileOutputStream(usersCSVFile, true);
+            FileWriter fileWriter = new FileWriter(fos.getFD());
+
+            fileWriter.append(row);
+            fileWriter.append(System.lineSeparator());
+
+            fileWriter.flush();
+            fileWriter.close();
+
+            cb.invoke(usersCSVFile);
+        } catch (Exception e) {
+            Toast.makeText(getReactApplicationContext(), "SE CREO EL ARCHIVO CSV EXITOSAMENTE", Toast.LENGTH_LONG).show();
         }
     }
     
