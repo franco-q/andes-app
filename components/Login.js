@@ -22,7 +22,7 @@ const styles = StyleSheet.create({
 		textAlign: 'center',
 		fontSize: 16,
 		color: '#FFF',
-		marginBottom: 10
+		marginBottom: 20
 	},
 	appButtonContainer: {
 		height: 46,
@@ -109,11 +109,9 @@ export default function ({ onLogin }) {
 				</Text>
 				{name && age && city && email && (
 					<TouchableOpacity onPress={checkIt} style={styles.appButtonContainer}>
-						{check && (
-							<Svg viewBox={'0 0 30 20'} height={20} width={30}>
-								<Path fill={'#FFFFFF'} d={'M12.7,18L3,8.3l1.5-1.5l8.1,8.1L25.4,2L27,3.6L12.7,18z'} />
-							</Svg>
-						)}
+						<Svg viewBox={'0 0 30 20'} height={20} width={30}>
+							<Path fill={'#FFFFFF'} d={'M12.7,18L3,8.3l1.5-1.5l8.1,8.1L25.4,2L27,3.6L12.7,18z'} />
+						</Svg>
 					</TouchableOpacity>
 				)}
 			</Row>

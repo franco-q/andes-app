@@ -9,8 +9,10 @@ import Brand from '../assets/brand.svg'
 import Carousel from 'react-native-snap-carousel'
 import { Row, Grid, Col } from 'react-native-easy-grid'
 import * as Animatable from 'react-native-animatable'
+import LottieView from 'lottie-react-native'
 
 import Sound from 'react-native-sound'
+import { block } from 'react-native-reanimated'
 
 Sound.setCategory('Playback')
 
@@ -241,6 +243,8 @@ export default function ({ setBg, userData, onEnd }) {
 	const [step, setStep] = useState(1)
 	const [score, setScore] = useState(5)
 
+	const $soundwaves = useRef()
+	const soundwaves = useRef()
 	const $CounDown = useRef()
 	const $Carousel = useRef()
 	const $Title = useRef()
@@ -253,11 +257,11 @@ export default function ({ setBg, userData, onEnd }) {
 		$Title.current.fadeOutDown(500)
 	}
 
-    const over = () => {
-        setStep(1)
-        onEnd()
-    }
-    
+	const over = () => {
+		setStep(1)
+		onEnd()
+	}
+
 	const next = () => {
 		setBg(mountainData[activeItem].bg)
 		$Title.current.fadeOutDown(500).then(() => {
@@ -271,7 +275,7 @@ export default function ({ setBg, userData, onEnd }) {
 	}
 
 	useEffect(() => {
-		WindSound.setNumberOfLoops(-1).setVolume(0.05).play()
+		WindSound.setNumberOfLoops(-1).setVolume(20).play()
 	}, [])
 
 	useEffect(() => {
@@ -289,11 +293,12 @@ export default function ({ setBg, userData, onEnd }) {
 				break
 			case 3:
 				setTitle('Escuchando...')
+				soundwaves.current.play()
 				AndesHelperModule.record(delay, decay)
 				$Title.current.fadeInDown(300)
 				setTimeout(() => {
 					setStep(4)
-				}, 4000)
+				}, 4150)
 				break
 			case 4:
 				AndesHelperModule.stop()
@@ -301,18 +306,18 @@ export default function ({ setBg, userData, onEnd }) {
 					setTitle('Analizando el eco...')
 					$Title.current.fadeInDown(300)
 					setTimeout(() => {
-						setStep(5)
-					}, 3000)
+                        
+					}, 10000 - 4150)
 				})
+				setScore(parseInt(getRandomArbitrary(1, 5)))
 				break
 			case 5:
 				$Title.current.fadeOutDown(300).then(() => {
 					setTitle('Tu grito hizo eco')
 					$Title.current.fadeInDown(300)
+					$Score.current.fadeInDown(500)
 				})
-				setScore(parseInt(getRandomArbitrary(1, 5)))
-				$Score.current.fadeInDown(300)
-                WindSound.stop()
+				WindSound.stop()
 				break
 		}
 	}, [step])
@@ -392,8 +397,13 @@ export default function ({ setBg, userData, onEnd }) {
 						<Counter count={countDown} setCount={setCount} />
 					</Animatable.View>
 				)}
+				{[4, 3].includes(step) && (
+					<Animatable.View ref={$soundwaves} style={{ flex: 1, height: '100%' }}>
+						<LottieView ref={soundwaves} loop={false} source={require('./animation.json')} onAnimationFinish={() => setStep(5)}/>
+					</Animatable.View>
+				)}
 				{step == 5 && (
-					<Animatable.View ref={$Score}>
+					<Animatable.View ref={$Score} style={{ opacity: 0 }}>
 						<TouchableOpacity
 							onPress={end}
 							style={{
@@ -420,17 +430,47 @@ export default function ({ setBg, userData, onEnd }) {
 				)}
 				{step == 6 && (
 					<Animatable.View animation="fadeIn">
-						<View style={[styles.center, { margin: 'auto' }]}>
+						<View style={[styles.center, { margin: 'auto', flexDirection: 'row', alignItems: 'center' }]}>
 							<Text
 								style={[
-									styles.GothamBlack,
+									styles.GothamBold,
 									{
-										textAlign: 'center',
+										height: 70,
 										fontSize: 48,
+										lineHeight: 70,
+										display: 'flex',
+										alignItems: 'flex-end',
 										color: '#FFF'
 									}
 								]}>
-								Disfrutá tus Andes gratis
+								Disfrutá tus
+							</Text>
+							<Text
+								style={{
+									display: 'flex',
+									alignItems: 'baseline',
+									paddingHorizontal: 10,
+									fontFamily: 'AlbraText-Black',
+									height: 70,
+									fontSize: 60,
+									lineHeight: 70,
+									color: '#FFF'
+								}}>
+								Andes
+							</Text>
+							<Text
+								style={[
+									styles.GothamBold,
+									{
+										height: 70,
+										fontSize: 48,
+										lineHeight: 70,
+										display: 'flex',
+										alignItems: 'flex-end',
+										color: '#FFF'
+									}
+								]}>
+								gratis
 							</Text>
 						</View>
 					</Animatable.View>

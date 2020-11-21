@@ -1,5 +1,5 @@
 import React, { useRef, useEffect, useState } from 'react'
-import { StatusBar, View, Text, StyleSheet, PermissionsAndroid, NativeModules } from 'react-native'
+import { StatusBar, View, Text, StyleSheet, PermissionsAndroid, NativeModules, SafeAreaView } from 'react-native'
 import Login from './components/Login'
 import Flow from './components/Flow'
 import { Row, Grid } from 'react-native-easy-grid'
@@ -14,7 +14,7 @@ var style = StyleSheet.create({
 	main: {
 		alignSelf: 'center',
 		width: 920,
-		height: 768
+		height: 800
 	},
 	header: {
 		height: 57,
@@ -102,11 +102,11 @@ const App = () => {
 	}, [play])
 
 	return (
-		<View>
+		<SafeAreaView style={{ flex: 1 }}>
 			<StatusBar hidden={true} />
 			<Animatable.View
 				transition="backgroundColor"
-				style={{ backgroundColor: bgColor, position: 'relative' }}
+				style={{ flex: 1, backgroundColor: bgColor, position: 'relative' }}
 				duration={500}
 				delay={1}>
 				<Animatable.Image
@@ -139,7 +139,7 @@ const App = () => {
 					</View>
 				</View>
 			</Animatable.View>
-		</View>
+		</SafeAreaView>
 	)
 }
 
