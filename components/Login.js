@@ -52,7 +52,7 @@ const styles = StyleSheet.create({
 		flexDirection: 'column'
 	}
 })
-export default function ({ onLogin }) {
+export default function ({ onLogin, onReadTC }) {
 	const [name, setName] = useState('Sergio')
 	const [age, setAge] = useState('20')
 	const [city, setCity] = useState('Mendoza')
@@ -104,9 +104,11 @@ export default function ({ onLogin }) {
 				/>
 			</Row>
 			<Row height={180} style={styles.row}>
-				<Text style={styles.conditions}>
-					Acepto términos y condiciones, políticas de privacidad y activaciones de marketing.
-				</Text>
+				<TouchableOpacity onPress={onReadTC}>
+					<Text style={styles.conditions}>
+						Acepto términos y condiciones, políticas de privacidad y activaciones de marketing.
+					</Text>
+				</TouchableOpacity>
 				{name && age && city && email && (
 					<TouchableOpacity onPress={checkIt} style={styles.appButtonContainer}>
 						<Svg viewBox={'0 0 30 20'} height={20} width={30}>

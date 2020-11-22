@@ -64,7 +64,7 @@ public class AndesHelperModule extends ReactContextBaseJavaModule {
     
     @ReactMethod
     public void show(String message, int duration) {
-        Toast.makeText(getReactApplicationContext(), message, duration).show();
+        //Toast.makeText(getReactApplicationContext(), message, duration).show();
     }
     
     @ReactMethod
@@ -78,7 +78,7 @@ public class AndesHelperModule extends ReactContextBaseJavaModule {
 
         }catch (Exception e){
 
-            Toast.makeText(getReactApplicationContext(), e.toString(), Toast.LENGTH_SHORT).show();
+            //Toast.makeText(getReactApplicationContext(), e.toString(), Toast.LENGTH_SHORT).show();
         }
         
         startEcho();
@@ -119,30 +119,30 @@ public class AndesHelperModule extends ReactContextBaseJavaModule {
 
             cb.invoke(usersCSVFile);
         } catch (Exception e) {
-            Toast.makeText(getReactApplicationContext(), "SE CREO EL ARCHIVO CSV EXITOSAMENTE", Toast.LENGTH_LONG).show();
+            //Toast.makeText(getReactApplicationContext(), "SE CREO EL ARCHIVO CSV EXITOSAMENTE", Toast.LENGTH_LONG).show();
         }
     }
     
     private void startEcho() {
         if(!supportRecording){
-            Toast.makeText(getReactApplicationContext(), "!supportRecording", Toast.LENGTH_SHORT).show();
+            //Toast.makeText(getReactApplicationContext(), "!supportRecording", Toast.LENGTH_SHORT).show();
             return;
         }
         if (!isPlaying) {
             if(!createSLBufferQueueAudioPlayer()) {
                 //statusView.setText(getString(R.string.player_error_msg));
-                Toast.makeText(getReactApplicationContext(), "R.string.player_error_msg", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getReactApplicationContext(), "R.string.player_error_msg", Toast.LENGTH_SHORT).show();
                 return;
             }
             if(!createAudioRecorder()) {
                 deleteSLBufferQueueAudioPlayer();
                 //statusView.setText(getString(R.string.recorder_error_msg));
-                Toast.makeText(getReactApplicationContext(), "R.string.recorder_error_msg", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getReactApplicationContext(), "R.string.recorder_error_msg", Toast.LENGTH_SHORT).show();
                 return;
             }
             startPlay();   // startPlay() triggers startRecording()
             //statusView.setText(getString(R.string.echoing_status_msg));
-            Toast.makeText(getReactApplicationContext(), "R.string.echoing_status_msg", Toast.LENGTH_SHORT).show();
+            //Toast.makeText(getReactApplicationContext(), "R.string.echoing_status_msg", Toast.LENGTH_SHORT).show();
         } else {
             stopPlay();  // stopPlay() triggers stopRecording()
             // updateNativeAudioUI();
@@ -151,7 +151,7 @@ public class AndesHelperModule extends ReactContextBaseJavaModule {
         }
         isPlaying = !isPlaying;
         //controlButton.setText(getString(isPlaying ? R.string.cmd_stop_echo: R.string.cmd_start_echo));
-        Toast.makeText(getReactApplicationContext(), "R.string.cmd_start_echo", Toast.LENGTH_SHORT).show();
+        //Toast.makeText(getReactApplicationContext(), "R.string.cmd_start_echo", Toast.LENGTH_SHORT).show();
     }
 
     public void onEchoClick() {
@@ -163,7 +163,7 @@ public class AndesHelperModule extends ReactContextBaseJavaModule {
     }
 
     private void queryNativeAudioParameters() {
-        Toast.makeText(getReactApplicationContext(), "queryNativeAudioParameters", Toast.LENGTH_SHORT).show();
+        //Toast.makeText(getReactApplicationContext(), "queryNativeAudioParameters", Toast.LENGTH_SHORT).show();
         supportRecording = true;
         AudioManager myAudioMgr = (AudioManager) reactContext.getSystemService(reactContext.AUDIO_SERVICE);
 

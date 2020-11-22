@@ -2,6 +2,8 @@ import React, { useRef, useEffect, useState } from 'react'
 import { StatusBar, View, Text, StyleSheet, PermissionsAndroid, NativeModules, SafeAreaView } from 'react-native'
 import Login from './components/Login'
 import Flow from './components/Flow'
+import TC from './components/TC'
+
 import { Row, Grid } from 'react-native-easy-grid'
 import Brand from './assets/brand.svg'
 import * as Animatable from 'react-native-animatable'
@@ -63,10 +65,12 @@ PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE
 const App = () => {
 	const $Img = useRef()
 	const $Main = useRef()
+	const $TC = useRef()
 
 	const [bg, setBg] = useState(back_mountains)
 	const [userData, setUserData] = useState({})
 	const [play, setPlay] = useState(false)
+	const [showTC, setShowTC] = useState(false)
 	const [bgColor, setBgColor] = useState('#D02C2F')
 
 	const login = ({ name, age, city, email }) => {
@@ -81,25 +85,31 @@ const App = () => {
 	const setMountain = bg => {
 		if (bg) {
 			setBg(bg)
-			$Img.current.fadeIn(500)
+			return $Img.current.fadeIn(500)
 		} else {
-			$Img.current.fadeOut(200)
+			return $Img.current.fadeOut(200)
 		}
 	}
 
 	const end = () => {
-		setMountain(back_mountains)
 		setUserData({})
 		setPlay(false)
-		setBgColor('#D02C2F')
+		setMountain(back_mountains).then(() => {
+			setBgColor('#D02C2F')
+		})
 	}
 
 	useEffect(() => {
 		if (play) {
 			setBgColor('#111111')
 			$Main.current.fadeInDown(100)
+		} else {
 		}
 	}, [play])
+
+	useEffect(() => {
+		showTC && $TC.current.fadeInUpBig()
+	}, [showTC])
 
 	return (
 		<SafeAreaView style={{ flex: 1 }}>
@@ -128,7 +138,7 @@ const App = () => {
 							{play ? (
 								<Flow userData={userData} setBg={setMountain} onEnd={end} />
 							) : (
-								<Login onLogin={login} />
+								<Login onLogin={login} onReadTC={() => setShowTC(true)} />
 							)}
 						</Row>
 					</GridAnimatable>
@@ -139,6 +149,11 @@ const App = () => {
 					</View>
 				</View>
 			</Animatable.View>
+			{showTC && (
+				<Animatable.View ref={$TC} style={{ position: 'absolute', top: 0, width: '100%', height: '100%' }}>
+					<TC onClose={() => $TC.current.fadeOutDownBig().then(() => setShowTC(false))} />
+				</Animatable.View>
+			)}
 		</SafeAreaView>
 	)
 }

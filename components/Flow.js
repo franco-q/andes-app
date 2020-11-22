@@ -12,7 +12,6 @@ import * as Animatable from 'react-native-animatable'
 import LottieView from 'lottie-react-native'
 
 import Sound from 'react-native-sound'
-import { block } from 'react-native-reanimated'
 
 Sound.setCategory('Playback')
 
@@ -252,20 +251,21 @@ export default function ({ setBg, userData, onEnd }) {
 	const $Score = useRef()
 
 	const end = () => {
-		setStep(6)
-		setBg()
 		$Title.current.fadeOutDown(500)
-	}
-
-	const over = () => {
-		setStep(1)
-		onEnd()
+		$Score.current.fadeOutDown(500).then(() => {
+			setStep(6)
+			setTimeout(() => {
+				setBg()
+				setStep(1)
+				onEnd()
+			}, 2000)
+		})
 	}
 
 	const next = () => {
 		setBg(mountainData[activeItem].bg)
 		$Title.current.fadeOutDown(500).then(() => {
-			setTitle('Gritá bien fuerte en...')
+			setTitle('Gritá “ANDES” bien fuerte')
 			$Title.current.fadeInDown(500)
 		})
 		$Next.current.fadeOutDown(500)
@@ -292,30 +292,51 @@ export default function ({ setBg, userData, onEnd }) {
 				$CounDown.current.zoomIn(500)
 				break
 			case 3:
-				setTitle('Escuchando...')
+				setTitle('Escuchando')
 				soundwaves.current.play()
 				AndesHelperModule.record(delay, decay)
-				$Title.current.fadeInDown(300)
-				setTimeout(() => {
-					setStep(4)
-				}, 4150)
+				$Title.current
+					.animate(
+						{
+							0: {
+								opacity: 0,
+								scale: 0.8
+							},
+							0.25: {
+								opacity: 1,
+								scale: 1
+							},
+							0.5: {
+								opacity: 0,
+								scale: 0.8
+							},
+							0.75: {
+								opacity: 1,
+								scale: 1
+							},
+							1: {
+								opacity: 0,
+								scale: 0.8
+							}
+						},
+						4150
+					)
+					.then(() => {
+						setStep(4)
+					})
 				break
 			case 4:
 				AndesHelperModule.stop()
-				$Title.current.fadeOutDown(300).then(() => {
-					setTitle('Analizando el eco...')
-					$Title.current.fadeInDown(300)
-					setTimeout(() => {
-                        
-					}, 10000 - 4150)
-				})
+				setTitle('Analizando el eco')
+				$Title.current.fadeInDown(300)
 				setScore(parseInt(getRandomArbitrary(1, 5)))
 				break
 			case 5:
 				$Title.current.fadeOutDown(300).then(() => {
 					setTitle('Tu grito hizo eco')
-					$Title.current.fadeInDown(300)
-					$Score.current.fadeInDown(500)
+					$Score.current.fadeInDown(500).then(() => {
+						$Title.current.fadeInDown(300)
+					})
 				})
 				WindSound.stop()
 				break
@@ -342,7 +363,7 @@ export default function ({ setBg, userData, onEnd }) {
 										color: '#FFF'
 									}
 								]}>
-								{step}
+								{step > 5 ? 5 : step}
 							</Text>
 							<Text
 								style={[
@@ -393,13 +414,18 @@ export default function ({ setBg, userData, onEnd }) {
 					</Animatable.View>
 				)}
 				{step == 2 && (
-					<Animatable.View ref={$CounDown}>
+					<Animatable.View ref={$CounDown} style={{ opacity: 0 }}>
 						<Counter count={countDown} setCount={setCount} />
 					</Animatable.View>
 				)}
 				{[4, 3].includes(step) && (
 					<Animatable.View ref={$soundwaves} style={{ flex: 1, height: '100%' }}>
-						<LottieView ref={soundwaves} loop={false} source={require('./animation.json')} onAnimationFinish={() => setStep(5)}/>
+						<LottieView
+							ref={soundwaves}
+							loop={false}
+							source={require('./animation.json')}
+							onAnimationFinish={() => setStep(5)}
+						/>
 					</Animatable.View>
 				)}
 				{step == 5 && (
@@ -495,16 +521,13 @@ export default function ({ setBg, userData, onEnd }) {
 								{
 									textAlign: 'center',
 									fontSize: 18,
-									color: '#FFF'
+									color: '#FFF',
+									marginBottom: 30
 								}
 							]}>
 							veces en los Andes
 						</Text>
-					</Animatable.View>
-				)}
-				{step == 6 && (
-					<Animatable.View ref={$Next}>
-						<TouchableOpacity onPress={over} style={styles.nextBtn}>
+						<TouchableOpacity onPress={end} style={styles.nextBtn}>
 							<Text style={styles.nextBtnTxt}>Finalizar</Text>
 						</TouchableOpacity>
 					</Animatable.View>
