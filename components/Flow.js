@@ -338,6 +338,8 @@ export default function ({ setBg, userData, onEnd }) {
 						$Title.current.fadeInDown(300)
 					})
 				})
+				break
+			case 6:
 				WindSound.stop()
 				break
 		}
