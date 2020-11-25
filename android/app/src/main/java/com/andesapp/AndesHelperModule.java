@@ -1,11 +1,16 @@
 package com.andesapp;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.pm.PackageManager;
 import android.media.AudioFormat;
 import android.media.AudioManager;
 import android.media.AudioRecord;
+import android.net.DhcpInfo;
+import android.net.wifi.WifiManager;
 import android.os.Build;
+import android.os.StrictMode;
+import android.util.Log;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -18,12 +23,23 @@ import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
+import com.facebook.react.bridge.ReadableArray;
+import com.facebook.react.bridge.ReadableType;
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.FileWriter;
+import java.io.IOException;
+import java.net.DatagramPacket;
+import java.net.DatagramSocket;
+import java.net.InetAddress;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.HashMap;
+
+import ch.bildspur.artnet.ArtNetClient;
+
 
 public class AndesHelperModule extends ReactContextBaseJavaModule {
     private static ReactApplicationContext reactContext;
@@ -32,8 +48,8 @@ public class AndesHelperModule extends ReactContextBaseJavaModule {
     private static final String DURATION_LONG_KEY = "LONG";
     private static final int AUDIO_ECHO_REQUEST = 0;
 
-    private String  nativeSampleRate;
-    private String  nativeSampleBufSize;
+    private String nativeSampleRate;
+    private String nativeSampleBufSize;
 
     private int echoDelayProgress;
 
@@ -48,12 +64,12 @@ public class AndesHelperModule extends ReactContextBaseJavaModule {
         super(context);
         reactContext = context;
     }
-    
+
     @Override
     public String getName() {
         return "AndesHelperModule";
     }
-    
+
     @Override
     public Map<String, Object> getConstants() {
         final Map<String, Object> constants = new HashMap<>();
@@ -61,26 +77,27 @@ public class AndesHelperModule extends ReactContextBaseJavaModule {
         constants.put(DURATION_LONG_KEY, Toast.LENGTH_LONG);
         return constants;
     }
-    
+
     @ReactMethod
     public void show(String message, int duration) {
-        //Toast.makeText(getReactApplicationContext(), message, duration).show();
+        Toast.makeText(getReactApplicationContext(), message, duration).show();
     }
-    
+
+    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
     @ReactMethod
     public void record(int delay, float decay) {
-        try{
+        try {
             queryNativeAudioParameters();
 
             if (supportRecording) {
                 createSLEngine(Integer.parseInt(nativeSampleRate), Integer.parseInt(nativeSampleBufSize), delay, decay);
             }
 
-        }catch (Exception e){
+        } catch (Exception e) {
 
             //Toast.makeText(getReactApplicationContext(), e.toString(), Toast.LENGTH_SHORT).show();
         }
-        
+
         startEcho();
     }
 
@@ -102,7 +119,7 @@ public class AndesHelperModule extends ReactContextBaseJavaModule {
         File carpeta = getReactApplicationContext().getExternalFilesDir(null);
         String usersCSVFile = carpeta.toString() + "/" + "Usuarios.csv";
 
-        if(!carpeta.exists()) {
+        if (!carpeta.exists()) {
             carpeta.mkdir();
         }
 
@@ -122,67 +139,77 @@ public class AndesHelperModule extends ReactContextBaseJavaModule {
             //Toast.makeText(getReactApplicationContext(), "SE CREO EL ARCHIVO CSV EXITOSAMENTE", Toast.LENGTH_LONG).show();
         }
     }
-    
+
     private void startEcho() {
-        if(!supportRecording){
-            //Toast.makeText(getReactApplicationContext(), "!supportRecording", Toast.LENGTH_SHORT).show();
+        if (!supportRecording) {
             return;
         }
         if (!isPlaying) {
-            if(!createSLBufferQueueAudioPlayer()) {
-                //statusView.setText(getString(R.string.player_error_msg));
-                //Toast.makeText(getReactApplicationContext(), "R.string.player_error_msg", Toast.LENGTH_SHORT).show();
+            if (!createSLBufferQueueAudioPlayer()) {
                 return;
             }
-            if(!createAudioRecorder()) {
+            if (!createAudioRecorder()) {
                 deleteSLBufferQueueAudioPlayer();
-                //statusView.setText(getString(R.string.recorder_error_msg));
-                //Toast.makeText(getReactApplicationContext(), "R.string.recorder_error_msg", Toast.LENGTH_SHORT).show();
                 return;
             }
             startPlay();   // startPlay() triggers startRecording()
-            //statusView.setText(getString(R.string.echoing_status_msg));
-            //Toast.makeText(getReactApplicationContext(), "R.string.echoing_status_msg", Toast.LENGTH_SHORT).show();
         } else {
             stopPlay();  // stopPlay() triggers stopRecording()
-            // updateNativeAudioUI();
             deleteAudioRecorder();
             deleteSLBufferQueueAudioPlayer();
         }
         isPlaying = !isPlaying;
-        //controlButton.setText(getString(isPlaying ? R.string.cmd_stop_echo: R.string.cmd_start_echo));
-        //Toast.makeText(getReactApplicationContext(), "R.string.cmd_start_echo", Toast.LENGTH_SHORT).show();
     }
 
-    public void onEchoClick() {
-        if (ActivityCompat.checkSelfPermission(getReactApplicationContext(), Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions( getCurrentActivity(), new String[] { Manifest.permission.RECORD_AUDIO }, AUDIO_ECHO_REQUEST);
-            return;
-        }
-        startEcho();
-    }
-
+    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
     private void queryNativeAudioParameters() {
-        //Toast.makeText(getReactApplicationContext(), "queryNativeAudioParameters", Toast.LENGTH_SHORT).show();
         supportRecording = true;
         AudioManager myAudioMgr = (AudioManager) reactContext.getSystemService(reactContext.AUDIO_SERVICE);
 
-        if(myAudioMgr == null) {
+        if (myAudioMgr == null) {
             supportRecording = false;
             return;
         }
 
-        nativeSampleRate  =  myAudioMgr.getProperty(AudioManager.PROPERTY_OUTPUT_SAMPLE_RATE);
-        nativeSampleBufSize =myAudioMgr.getProperty(AudioManager.PROPERTY_OUTPUT_FRAMES_PER_BUFFER);
+        nativeSampleRate = myAudioMgr.getProperty(AudioManager.PROPERTY_OUTPUT_SAMPLE_RATE);
+        nativeSampleBufSize = myAudioMgr.getProperty(AudioManager.PROPERTY_OUTPUT_FRAMES_PER_BUFFER);
 
         // hardcoded channel to mono: both sides -- C++ and Java sides
-        int recBufSize = AudioRecord.getMinBufferSize( Integer.parseInt(nativeSampleRate), AudioFormat.CHANNEL_IN_MONO, AudioFormat.ENCODING_PCM_16BIT);
+        int recBufSize = AudioRecord.getMinBufferSize(Integer.parseInt(nativeSampleRate), AudioFormat.CHANNEL_IN_MONO, AudioFormat.ENCODING_PCM_16BIT);
 
         if (recBufSize == AudioRecord.ERROR || recBufSize == AudioRecord.ERROR_BAD_VALUE) {
             supportRecording = false;
         }
     }
 
+    @ReactMethod
+    public void sendBroadcast(ReadableArray arrDmx, Double val) {
+        // Hack Prevent crash (sending should be done using an async task)
+        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+        StrictMode.setThreadPolicy(policy);
+
+        try {
+            byte[] dmxData = new byte[20];
+
+            for (int num = 0; num < arrDmx.size(); num++) {
+                dmxData[num] = (byte) fromIntToByte(arrDmx.getString(num));
+            }
+
+            ArtNetClient artnet = new ArtNetClient();
+            artnet.start();
+            artnet.unicastDmx("192.168.0.7", 0, 0, dmxData);
+            artnet.stop();
+
+            Log.e("MyActivity", "val: " + String.valueOf(val));
+
+        } catch (Exception e) {
+            Log.e("MyActivity", "IOException: " + e.getMessage());
+        }
+    }
+
+    public static byte fromIntToByte(String value) {
+        return (byte) Integer.parseInt(value);
+    }
 
     /*
      * Loading our lib
@@ -195,13 +222,20 @@ public class AndesHelperModule extends ReactContextBaseJavaModule {
      * jni function declarations
      */
     static native void createSLEngine(int rate, int framesPerBuf, long delayInMs, float decay);
+
     static native void deleteSLEngine();
+
     static native boolean configureEcho(int delayInMs, float decay);
+
     static native boolean createSLBufferQueueAudioPlayer();
+
     static native void deleteSLBufferQueueAudioPlayer();
 
     static native boolean createAudioRecorder();
+
     static native void deleteAudioRecorder();
+
     static native void startPlay();
+
     static native void stopPlay();
 }

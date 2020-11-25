@@ -1,5 +1,14 @@
 import React, { useRef, useEffect, useState } from 'react'
-import { StatusBar, View, Text, StyleSheet, PermissionsAndroid, NativeModules, SafeAreaView } from 'react-native'
+import {
+	StatusBar,
+	View,
+	Text,
+	StyleSheet,
+	PermissionsAndroid,
+	NativeModules,
+	SafeAreaView,
+	Animated
+} from 'react-native'
 import Login from './components/Login'
 import Flow from './components/Flow'
 import TC from './components/TC'
@@ -7,6 +16,14 @@ import TC from './components/TC'
 import { Row, Grid } from 'react-native-easy-grid'
 import Brand from './assets/brand.svg'
 import * as Animatable from 'react-native-animatable'
+
+import interpolate from 'color-interpolate'
+
+let ch1 = interpolate(['black', 'gray', 'white'])
+let ch2 = interpolate(['black', 'blue', 'white'])
+let ch3 = interpolate(['black', 'red', 'blue'])
+let ch4 = interpolate(['black', 'green', 'white'])
+let ch5 = interpolate(['black', 'aqua', 'lime'])
 
 var style = StyleSheet.create({
 	bg: {
@@ -67,6 +84,24 @@ const App = () => {
 	const $Main = useRef()
 	const $TC = useRef()
 
+	const animDmx = useRef(new Animated.Value(0)).current
+|
+	animDmx.addListener(({ value }) => {
+		console.log(
+			[ch1, ch2, ch3, ch4, ch5].reduce(
+				(data, ch, i) => data.concat([i + 1 + '']).concat(ch(value).match(/\d+/g)),
+				[]
+			)
+		)
+		NativeModules.AndesHelperModule.sendBroadcast(
+			[ch1, ch2, ch3, ch4, ch5].reduce(
+				(data, ch, i) => data.concat([i + 1 + '']).concat(ch(value).match(/\d+/g)).map(String),
+				[]
+			),
+			value
+		)
+	})
+
 	const [bg, setBg] = useState(back_mountains)
 	const [userData, setUserData] = useState({})
 	const [play, setPlay] = useState(false)
@@ -83,20 +118,13 @@ const App = () => {
 	}
 
 	const setMountain = bg => {
-		if (bg) {
-			setBg(bg)
-			return $Img.current.fadeIn(500)
-		} else {
-			return $Img.current.fadeOut(200)
-		}
+		setBg(bg)
 	}
 
 	const end = () => {
 		setUserData({})
 		setPlay(false)
-		setMountain(back_mountains).then(() => {
-			setBgColor('#D02C2F')
-		})
+		setMountain(back_mountains)
 	}
 
 	useEffect(() => {
@@ -104,12 +132,29 @@ const App = () => {
 			setBgColor('#111111')
 			$Main.current.fadeInDown(100)
 		} else {
+			setBgColor('#D02C2F')
 		}
 	}, [play])
 
 	useEffect(() => {
 		showTC && $TC.current.fadeInUpBig()
 	}, [showTC])
+
+	useEffect(() => {
+		if (bg) {
+			$Img.current.fadeIn(500)
+		} else {
+			$Img.current.fadeOut(200)
+		}
+	}, [bg])
+
+	useEffect(() => {
+		Animated.timing(animDmx, {
+			toValue: 1,
+			useNativeDriver: true,
+			duration: 5000
+		}).start()
+	})
 
 	return (
 		<SafeAreaView style={{ flex: 1 }}>

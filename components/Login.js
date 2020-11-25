@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { StyleSheet, Text, TextInput, TouchableOpacity } from 'react-native'
+import { StyleSheet, Text, TextInput, TouchableOpacity, Keyboard } from 'react-native'
 import Svg, { Path } from 'react-native-svg'
 import { Row, Grid } from 'react-native-easy-grid'
 
@@ -53,16 +53,15 @@ const styles = StyleSheet.create({
 	}
 })
 export default function ({ onLogin, onReadTC }) {
-	const [name, setName] = useState('Sergio')
-	const [age, setAge] = useState('20')
-	const [city, setCity] = useState('Mendoza')
-	const [email, setEmail] = useState('email@andes.com')
-	const [check, setCheck] = useState(false)
+	const [name, setName] = useState()
+	const [age, setAge] = useState()
+	const [city, setCity] = useState()
+	const [email, setEmail] = useState()
 
 	const checkIt = () => {
 		if (name && age && city && email) {
-			setCheck(true)
-			onLogin({ name, age, city, email })
+			console.log({ name, age, city, email })
+			// onLogin({ name, age, city, email })
 		}
 	}
 
@@ -76,31 +75,40 @@ export default function ({ onLogin, onReadTC }) {
 					placeholder={'Nombre y apellido'}
 					placeholderTextColor={'#FFF'}
 					style={styles.input}
-					onTextInput={setName}
-					value={name}
+                    onChangeText={val => (val ? setName(val) : setName())}
+                    value={name}
+					disableFullscreenUI
+					onSubmitEditing={Keyboard.dismiss}
 				/>
 				<TextInput
 					placeholder={'Edad'}
 					placeholderTextColor={'#FFF'}
 					keyboardType={'number-pad'}
 					style={styles.input}
-					onTextInput={setAge}
-					value={age}
+                    maxLength={2}
+                    onChangeText={val => (val ? setAge(val.replace(/[^0-9]/g, '')) : setAge())}
+                    value={age}
+					disableFullscreenUI
+					onSubmitEditing={Keyboard.dismiss}
 				/>
 				<TextInput
 					placeholder={'Localidad'}
 					placeholderTextColor={'#FFF'}
 					style={styles.input}
-					onTextInput={setCity}
-					value={city}
+                    onChangeText={val => (val ? setCity(val) : setCity())}
+                    value={city}
+					disableFullscreenUI
+					onSubmitEditing={Keyboard.dismiss}
 				/>
 				<TextInput
 					placeholder={'Mail'}
 					keyboardType={'email-address'}
 					placeholderTextColor={'#FFF'}
 					style={styles.input}
-					onTextInput={setEmail}
-					value={email}
+                    onChangeText={val => (val ? setEmail(val) : setEmail())}
+                    value={email}
+					disableFullscreenUI
+					onSubmitEditing={Keyboard.dismiss}
 				/>
 			</Row>
 			<Row height={180} style={styles.row}>

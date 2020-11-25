@@ -62,15 +62,18 @@ const mountainData = [
 const styles = StyleSheet.create({
 	nextBtn: {
 		height: 50,
+		paddingVertical: 15,
+		position: 'relative',
 		width: 180,
 		borderColor: '#8D1E21',
 		borderWidth: 2,
 		borderRadius: 25,
 		alignItems: 'center',
-		justifyContent: 'center'
+		marginTop: 0
 	},
 	nextBtnTxt: {
 		fontSize: 20,
+		lineHeight: 20,
 		textAlign: 'center',
 		fontFamily: 'Gotham-Book',
 		color: '#FFF'
@@ -504,7 +507,7 @@ export default function ({ setBg, userData, onEnd }) {
 					</Animatable.View>
 				)}
 			</Row>
-			<Row style={styles.center}>
+			<Row style={[{}, styles.center]}>
 				{step == 1 && (
 					<Animatable.View ref={$Next}>
 						<TouchableOpacity onPress={next} style={styles.nextBtn}>
@@ -516,22 +519,25 @@ export default function ({ setBg, userData, onEnd }) {
 				{step === 5 && (
 					<Animatable.View
 						animation="fadeIn"
-						style={[styles.center, { height: 56, alignSelf: 'flex-start' }]}>
+						style={[
+							styles.center,
+							{ flexDirection: 'column', height: '100%', justifyContent: 'space-between' }
+						]}>
 						<Text
 							style={[
 								styles.GothamBlack,
 								{
 									textAlign: 'center',
 									fontSize: 18,
-									color: '#FFF',
-									marginBottom: 30
+									color: '#FFF'
 								}
 							]}>
 							veces en los Andes
 						</Text>
-						<TouchableOpacity onPress={end} style={styles.nextBtn}>
-							<Text style={styles.nextBtnTxt}>Finalizar</Text>
+						<TouchableOpacity onPress={end} style={[styles.nextBtn]}>
+							<Text style={[styles.nextBtnTxt, {}]}>Finalizar</Text>
 						</TouchableOpacity>
+						<View style={{ paddingVertical: 20, position: 'relative' }}></View>
 					</Animatable.View>
 				)}
 			</Row>
