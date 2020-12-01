@@ -1,17 +1,23 @@
 import React, { useState, useRef, useEffect } from 'react'
-import { View, StyleSheet, Text, TouchableOpacity, NativeModules } from 'react-native'
+import { View, StyleSheet, Text, TouchableOpacity, NativeModules, Animated } from 'react-native'
+import Carousel from 'react-native-snap-carousel'
+import { Row, Grid, Col } from 'react-native-easy-grid'
+import * as Animatable from 'react-native-animatable'
+import LottieView from 'lottie-react-native'
+import Sound from 'react-native-sound'
+import interpolate from 'color-interpolate'
 import Mountain1 from '../assets/images/mountain_wheel_1.svg'
 import Mountain2 from '../assets/images/mountain_wheel_2.svg'
 import Mountain3 from '../assets/images/mountain_wheel_3.svg'
 import Mountain4 from '../assets/images/mountain_wheel_4.svg'
 import Mountain5 from '../assets/images/mountain_wheel_5.svg'
-import Brand from '../assets/brand.svg'
-import Carousel from 'react-native-snap-carousel'
-import { Row, Grid, Col } from 'react-native-easy-grid'
-import * as Animatable from 'react-native-animatable'
-import LottieView from 'lottie-react-native'
 
-import Sound from 'react-native-sound'
+let ch0 = interpolate(['#820000', '#820000'])
+let ch1 = interpolate(['#828282', '#828282', '#828282', '#828282', '#828282', '#820000', '#820000', '#820000', '#820000', '#820000'])
+let ch2 = interpolate(['#000000', '#828282', '#828282', '#828282', '#828282', '#828282', '#820000', '#820000', '#820000', '#820000'])
+let ch3 = interpolate(['#000000', '#000000', '#828282', '#828282', '#828282', '#828282', '#828282', '#820000', '#820000', '#820000'])
+let ch4 = interpolate(['#000000', '#000000', '#000000', '#828282', '#828282', '#828282', '#828282', '#828282', '#820000', '#820000'])
+let ch5 = interpolate(['#000000', '#000000', '#000000', '#000000', '#828282', '#828282', '#828282', '#828282', '#828282', '#820000'])
 
 Sound.setCategory('Playback')
 
@@ -51,11 +57,11 @@ const mountainData = [
 		bg: require('../assets/images/imgs-back-potrerillos.jpg')
 	},
 	{
-		title: 'VILLAVICENCIO',
-		altitud: '3.300 MSNM',
-		superficie: '62.000 HA',
+		title: 'VALLECITOS',
+		altitud: '3.350 MSNM',
+		superficie: '2.000 HA',
 		svg: Mountain5,
-		bg: require('../assets/images/imgs-back-villavicencio.jpg')
+		bg: require('../assets/images/imgs-back-vallecitos.jpg')
 	}
 ]
 
@@ -116,8 +122,8 @@ const _date = new Date()
 
 const getRandomArbitrary = (min, max) => Math.random() * (max - min) + min
 
-let decay = parseFloat(getRandomArbitrary(0.2, 0.8).toFixed(2))
-let delay = parseInt(getRandomArbitrary(200, 700))
+let decay = parseFloat(getRandomArbitrary(0.1, 0.3).toFixed(2))
+let delay = parseInt(getRandomArbitrary(400, 700))
 
 const hours = _date.getHours()
 const min = _date.getMinutes()
@@ -253,6 +259,22 @@ export default function ({ setBg, userData, onEnd }) {
 	const $Next = useRef()
 	const $Score = useRef()
 
+	const animDmx = useRef(new Animated.Value(0)).current
+
+	animDmx.addListener(({ value }) => {
+		NativeModules.AndesHelperModule.sendBroadcast(
+			[ch5, ch4, ch3, ch2, ch1, ch0].reduce((data, ch) => data.concat(ch(value).match(/\d+/g)).map(String), [])
+		)
+	})
+
+	const AnimationDMX = Animated.timing(animDmx, {
+		toValue: 1,
+		duration: 8000,
+		useNativeDriver: true
+	})
+
+	useEffect(() => {})
+
 	const end = () => {
 		$Title.current.fadeOutDown(500)
 		$Score.current.fadeOutDown(500).then(() => {
@@ -295,32 +317,41 @@ export default function ({ setBg, userData, onEnd }) {
 				$CounDown.current.zoomIn(500)
 				break
 			case 3:
+				AnimationDMX.start(() => {
+					NativeModules.AndesHelperModule.sendBroadcast([
+						'133',
+						'0',
+						'0',
+						'133',
+						'0',
+						'0',
+						'133',
+						'0',
+						'0',
+						'133',
+						'0',
+						'0',
+						'133',
+						'0',
+						'0',
+						'133',
+						'0',
+						'0'
+					])
+				})
 				setTitle('Escuchando')
 				soundwaves.current.play()
 				AndesHelperModule.record(delay, decay)
 				$Title.current
 					.animate(
 						{
-							0: {
-								opacity: 0,
-								scale: 0.8
-							},
-							0.25: {
-								opacity: 1,
-								scale: 1
-							},
-							0.5: {
-								opacity: 0,
-								scale: 0.8
-							},
-							0.75: {
-								opacity: 1,
-								scale: 1
-							},
-							1: {
-								opacity: 0,
-								scale: 0.8
-							}
+							0: { opacity: 0 },
+							0.19: { opacity: 1 },
+							0.34: { opacity: 0 },
+							0.5: { opacity: 1 },
+							0.66: { opacity: 0 },
+							0.84: { opacity: 1 },
+							1: { opacity: 0 }
 						},
 						4150
 					)
@@ -332,7 +363,7 @@ export default function ({ setBg, userData, onEnd }) {
 				AndesHelperModule.stop()
 				setTitle('Analizando el eco')
 				$Title.current.fadeInDown(300)
-				setScore(parseInt(getRandomArbitrary(1, 5)))
+				setScore(parseInt(getRandomArbitrary(1, 18)))
 				break
 			case 5:
 				$Title.current.fadeOutDown(300).then(() => {
@@ -343,6 +374,7 @@ export default function ({ setBg, userData, onEnd }) {
 				})
 				break
 			case 6:
+                AnimationDMX.stop()
 				WindSound.stop()
 				break
 		}
@@ -350,10 +382,9 @@ export default function ({ setBg, userData, onEnd }) {
 
 	return (
 		<Grid style={{ width: 920 }}>
-			<Row style={{ height: 125 }}>
+			<Row style={{ height: 90 }}>
 				<Grid>
 					<Col style={{ alignItems: 'flex-start', justifyContent: 'flex-end' }}>
-						<Brand width={90} height={20} style={{ marginBottom: 'auto' }} />
 						<Text style={[{ color: '#FFF', fontSize: 28 }, styles.GothamBold]}>{userData.name}</Text>
 						<Text style={[{ color: '#D02C2F', fontSize: 22 }, styles.GothamBook]}>{userData.email}</Text>
 					</Col>
@@ -397,7 +428,7 @@ export default function ({ setBg, userData, onEnd }) {
 				</Grid>
 			</Row>
 			<Row style={[{ height: 55 }, styles.center]}>
-				<Animatable.Text ref={$Title} style={[styles.GothamBlack, { fontSize: 18, color: '#FFF' }]}>
+				<Animatable.Text ref={$Title} style={[styles.GothamBook, { fontSize: 18, color: '#FFF' }]}>
 					{title}
 				</Animatable.Text>
 			</Row>
@@ -519,13 +550,14 @@ export default function ({ setBg, userData, onEnd }) {
 				{step === 5 && (
 					<Animatable.View
 						animation="fadeIn"
+						delay={900}
 						style={[
 							styles.center,
 							{ flexDirection: 'column', height: '100%', justifyContent: 'space-between' }
 						]}>
 						<Text
 							style={[
-								styles.GothamBlack,
+								styles.GothamBook,
 								{
 									textAlign: 'center',
 									fontSize: 18,
@@ -535,7 +567,7 @@ export default function ({ setBg, userData, onEnd }) {
 							veces en los Andes
 						</Text>
 						<TouchableOpacity onPress={end} style={[styles.nextBtn]}>
-							<Text style={[styles.nextBtnTxt, {}]}>Finalizar</Text>
+							<Text style={styles.nextBtnTxt}>Finalizar</Text>
 						</TouchableOpacity>
 						<View style={{ paddingVertical: 20, position: 'relative' }}></View>
 					</Animatable.View>

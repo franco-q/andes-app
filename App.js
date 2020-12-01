@@ -19,11 +19,12 @@ import * as Animatable from 'react-native-animatable'
 
 import interpolate from 'color-interpolate'
 
-let ch1 = interpolate(['black', 'gray', 'white'])
-let ch2 = interpolate(['black', 'blue', 'white'])
-let ch3 = interpolate(['black', 'red', 'blue'])
-let ch4 = interpolate(['black', 'green', 'white'])
-let ch5 = interpolate(['black', 'aqua', 'lime'])
+let ch0 = interpolate(['#000', '#820000', '#828282', '#820000', '#000'])
+let ch1 = interpolate(['#000', '#820000', '#828282', '#820000', '#000'])
+let ch2 = interpolate(['#000', '#820000', '#828282', '#820000', '#000'])
+let ch3 = interpolate(['#000', '#820000', '#828282', '#820000', '#000'])
+let ch4 = interpolate(['#000', '#820000', '#828282', '#820000', '#000'])
+let ch5 = interpolate(['#000', '#820000', '#828282', '#820000', '#000'])
 
 var style = StyleSheet.create({
 	bg: {
@@ -36,8 +37,9 @@ var style = StyleSheet.create({
 		height: 800
 	},
 	header: {
-		height: 57,
-		alignItems: 'center'
+		height: 80,
+		justifyContent: 'center',
+		alignItems: 'flex-start'
 	},
 	footer: {
 		height: 57,
@@ -85,20 +87,10 @@ const App = () => {
 	const $TC = useRef()
 
 	const animDmx = useRef(new Animated.Value(0)).current
-|
+
 	animDmx.addListener(({ value }) => {
-		console.log(
-			[ch1, ch2, ch3, ch4, ch5].reduce(
-				(data, ch, i) => data.concat([i + 1 + '']).concat(ch(value).match(/\d+/g)),
-				[]
-			)
-		)
 		NativeModules.AndesHelperModule.sendBroadcast(
-			[ch1, ch2, ch3, ch4, ch5].reduce(
-				(data, ch, i) => data.concat([i + 1 + '']).concat(ch(value).match(/\d+/g)).map(String),
-				[]
-			),
-			value
+			[ch5, ch4, ch3, ch2, ch1, ch0].reduce((data, ch) => data.concat(ch(value).match(/\d+/g)).map(String), [])
 		)
 	})
 
@@ -108,9 +100,11 @@ const App = () => {
 	const [showTC, setShowTC] = useState(false)
 	const [bgColor, setBgColor] = useState('#D02C2F')
 
-	const login = ({ name, age, city, email }) => {
-		setUserData({ name, age, city, email })
-		NativeModules.AndesHelperModule.saveData([name, age, city, email].join(','), () => {})
+	const login = ({ name, borndate, city, email, beer }) => {
+		setUserData({ name, borndate, city, email, beer })
+		let _date = new Date()
+		let tstamp = `${_date.getFullYear()}/${(_date.getMonth() + 1)}/${_date.getDate()} ${_date.getHours()}/${_date.getMinutes()}/${_date.getSeconds()}`
+		NativeModules.AndesHelperModule.saveData([tstamp, name, borndate, city, email, beer].join(','), () => {})
 		$Img.current.fadeOut(200).then(() => {})
 		$Main.current.fadeOutDown(200).then(() => {
 			setPlay(true)
@@ -141,20 +135,67 @@ const App = () => {
 	}, [showTC])
 
 	useEffect(() => {
-		if (bg) {
-			$Img.current.fadeIn(500)
-		} else {
-			$Img.current.fadeOut(200)
-		}
+		bg ? $Img.current.fadeIn(500) : $Img.current.fadeOut(200)
 	}, [bg])
 
-	useEffect(() => {
+	const AnimationLoop = Animated.loop(
 		Animated.timing(animDmx, {
 			toValue: 1,
-			useNativeDriver: true,
-			duration: 5000
-		}).start()
-	})
+			duration: 5000,
+			useNativeDriver: true
+		}),
+		{ iterations: -1 }
+	)
+
+	function endArnet() {
+		AnimationLoop.stop()
+		NativeModules.AndesHelperModule.sendBroadcast([
+			'0',
+			'0',
+			'0',
+			'0',
+			'0',
+			'0',
+			'0',
+			'0',
+			'0',
+			'0',
+			'0',
+			'0',
+			'0',
+			'0',
+			'0',
+			'0',
+			'0',
+			'0'
+		])
+	}
+
+	useEffect(() => {
+		NativeModules.AndesHelperModule.sendBroadcast([
+			'0',
+			'0',
+			'0',
+			'0',
+			'0',
+			'0',
+			'0',
+			'0',
+			'0',
+			'0',
+			'0',
+			'0',
+			'0',
+			'0',
+			'0',
+			'0',
+			'0',
+			'0'
+		])
+		if (!play) {
+			AnimationLoop.start()
+		}
+	}, [play])
 
 	return (
 		<SafeAreaView style={{ flex: 1 }}>
@@ -177,13 +218,15 @@ const App = () => {
 					}}
 				/>
 				<View style={style.main}>
+					<View style={style.header}>
+						<Brand width={90} height={20} />
+					</View>
 					<GridAnimatable ref={$Main} delay={1}>
-						<Row style={style.header}>{!play && <Brand width={90} height={20} />}</Row>
 						<Row>
 							{play ? (
 								<Flow userData={userData} setBg={setMountain} onEnd={end} />
 							) : (
-								<Login onLogin={login} onReadTC={() => setShowTC(true)} />
+								<Login onLogin={login} onReadTC={() => setShowTC(true)} stopAnimation={endArnet} />
 							)}
 						</Row>
 					</GridAnimatable>

@@ -94,7 +94,6 @@ public class AndesHelperModule extends ReactContextBaseJavaModule {
             }
 
         } catch (Exception e) {
-
             //Toast.makeText(getReactApplicationContext(), e.toString(), Toast.LENGTH_SHORT).show();
         }
 
@@ -183,13 +182,13 @@ public class AndesHelperModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void sendBroadcast(ReadableArray arrDmx, Double val) {
+    public void sendBroadcast(ReadableArray arrDmx) {
         // Hack Prevent crash (sending should be done using an async task)
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
 
         try {
-            byte[] dmxData = new byte[20];
+            byte[] dmxData = new byte[18];
 
             for (int num = 0; num < arrDmx.size(); num++) {
                 dmxData[num] = (byte) fromIntToByte(arrDmx.getString(num));
@@ -197,13 +196,9 @@ public class AndesHelperModule extends ReactContextBaseJavaModule {
 
             ArtNetClient artnet = new ArtNetClient();
             artnet.start();
-            artnet.unicastDmx("192.168.0.7", 0, 0, dmxData);
+            artnet.unicastDmx("192.168.0.90", 0, 0, dmxData);
             artnet.stop();
-
-            Log.e("MyActivity", "val: " + String.valueOf(val));
-
         } catch (Exception e) {
-            Log.e("MyActivity", "IOException: " + e.getMessage());
         }
     }
 

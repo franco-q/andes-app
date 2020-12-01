@@ -47,6 +47,276 @@ export default ({ onClose }) => {
 				<Close />
 			</TouchableOpacity>
 			<ScrollView style={styles.ScrollView} onMomentumScrollEnd={() => console.log('top')}>
+				<Text style={styles.title}>BASES Y CONDICIONES</Text>
+				<Text style={styles.subtitle}>Promoción “El Grito de los Andes”</Text>
+
+				<Text style={styles.subtitle}>1.- Aceptación de Bases y Condiciones:</Text>
+				<Text style={styles.text}>
+					La presente acción promocional denominada “El Grito de los Andes” (en adelante, la “Promoción”) es
+					organizada por Cervecería y Maltería Quilmes S.A.I.C.A. y G, CUIT 33-50835825-9, con domicilio
+					constituido a los efectos de la presente Promoción en la calle Charcas 5160, Ciudad Autónoma de
+					Buenos Aires (en adelante, el “Organizador”) para su marca Andes Origen. Las personas intervinientes
+					en esta Promoción por su sola participación aceptan de pleno derecho y de forma incondicional todas
+					y cada una de las disposiciones descriptas en estas bases y condiciones (en adelante, las “Bases”).
+				</Text>
+
+				<Text style={styles.subtitle}>2.- Vigencia:</Text>
+				<Text style={styles.text}>
+					La presente Promoción tendrá vigencia en el Gran Mendoza (en adelante, el “Territorio”), desde el
+					jueves 10 de diciembre de 2020 a las 16:00hs hasta el lunes 21 de diciembre de 2020 a las 12:59 hs ó
+					hasta alcanzar el stock de 13.000 (trece mil) tarjetas conforme su definición en el punto 6 de estas
+					Bases (en adelante, el “Plazo de Vigencia”).
+				</Text>
+				<Text style={styles.subtitle}>3.- Participantes:</Text>
+				<Text style={styles.text}>
+					Podrán participar en la presente Promoción, todas las personas humanas que al momento de la entrada
+					en vigencia de la Promoción sean mayores de 18 años, con domicilio en el Territorio, que durante el
+					Plazo de Vigencia observen el mecanismo de la Promoción indicado en estas Bases, y que no se
+					encuentren comprendidos en alguna de las causales de exclusión referidas a continuación (en
+					adelante, el/los “Participantes”).
+				</Text>
+				<Text style={styles.subtitle}>4.- Exclusión:</Text>
+				<Text style={styles.text}>
+					No podrán participar los empleados del Organizador, ni los empleados ni personal directivo de las
+					agencias de publicidad y promociones, y demás proveedores vinculados a la presente Promoción, ni sus
+					parientes hasta el segundo grado de consanguinidad y primero de afinidad. Esta restricción asimismo
+					aplicará a los empleados desvinculados de las empresas mencionadas precedentemente, dentro de los
+					treinta (30) días del comienzo de la Promoción.
+				</Text>
+				<Text style={styles.subtitle}>5.- Mecánica:</Text>
+				<Text style={styles.text}>
+					Aquellos interesados en participar, y cumplan los requisitos previstos en estas Bases, deberán
+					completar sus datos personales mínimos (nombre y apellido, edad, localidad, mail y cerveza
+					preferida) en la tablet que estarán disponibles en los puntos de venta, los días y con la
+					identificación de la Promoción que se detallan en el Anexo I. Luego de esto, deberán seleccionar un
+					punto en la montaña desde el cual le gustaría que suene su eco entre las opciones que se le brinden.
+					Una vez hecho, debe gritar “Andes” en el ecófono que se le pondrá a disposición en el stand. La
+					interfase de la tablet le mostrará en base al orden en el que haya participado, la cantidad de latas
+					de cerveza Andes que obtendrá, que podrán ser de 1 (una) a 18 (dieciocho). Una persona encargada del
+					stand le dará a la persona la cantidad de tarjetas correspondiente a la cantidad de latas que se
+					haya ganado. Cada tarjeta se podrá canjear por una lata de cerveza Andes 473ml. en cualquier
+					supermercado Átomo de Gran Mendoza o en los siguientes Go Bar: Go Bar Viamonte (Viamonte, M5505
+					Chacras de Coria, Mendoza), Go Bar Mayorista Rodríguez (Cnel Rodríguez 604, M5500 Mendoza), Go Bar
+					Casa Central (Perito Moreno 2455, M5500 Mendoza) y sujeto al stock disponible en el momento del
+					canje en el punto de venta seleccionado. Todos los Participantes deberán cumplir con las normas
+					sanitarias vigentes manteniendo distancia de un metro y medio con otros participantes, usando
+					tapabocas y tomándose la temperatura cuando el local se lo solicite.~{'\n'}
+					La participación en esta Promoción no implica obligación de compra alguna, siendo el único requisito
+					cumplir con la mecánica de participación aquí detallada.
+				</Text>
+				<Text style={styles.subtitle}>6.- Programa de Premios:</Text>
+				<Text style={styles.text}>
+					El programa de premios incluye 13.000 tarjetas canjeables cada una por una lata de cerveza de 473ml
+					(el “Premio” o “Tarjetas”), el máximo de Tarjetas a las que podrá acceder un solo participante
+					durante la Promoción será de 18. Las Tarjetas podrán ser canjeadas en los locales de canje que se
+					detallan en el Anexo II hasta el día 31 de enero de 2021, transcurrida esa fecha, las mismas
+					perderán toda validez.~{'\n'}
+					El Premio no incluye ninguna otra prestación, bien o servicio no enumerado en estas Bases y no podrá
+					ser canjeados por su equivalente en dinero u otro bien o servicio, ni ser transferido a terceros.
+					Tampoco podrá ser intercambiado o comercializado, no pudiendo ser reclamado por otras personas que
+					no sean ganadores.
+				</Text>
+				<Text style={styles.subtitle}>7.- Entrega de Premios:</Text>
+				<Text style={styles.text}>
+					Los Premios serán entregados una vez finalizada la participación en el mismo punto de difusión de la
+					Promoción.
+				</Text>
+				<Text style={styles.subtitle}>8.- Asignación y adjudicación de los Premios:</Text>
+				<Text style={styles.text}>
+					Los Participantes, luego de su participación serán informados del total de Tarjetas que le
+					corresponden, lo cual dependerá de un orden aleatorio predeterminado entre todas las participaciones
+					que se lleven a cabo a lo largo de la Promoción y que será predeterminado con antelación al
+					lanzamiento de la Promoción.
+				</Text>
+				<Text style={styles.subtitle}>9.- Premio no asignados:</Text>
+				<Text style={styles.text}>
+					La falta de reclamo de asignación del Premio, la falta de acreditación de la identidad del ganador o
+					el incumplimiento de cualquiera de los requisitos establecidos en estas Bases hará perder al
+					Ganador, automáticamente, el derecho a la asignación del Premio y será considerado como no asignado.
+					El Premio no asignado quedará en propiedad y a disposición del Organizador.
+				</Text>
+				<Text style={styles.subtitle}>10.- Gastos adicionales:</Text>
+				<Text style={styles.text}>
+					Todo impuesto actual o futuro que grave los Premios objeto de la presente Promoción o todo gasto en
+					que por cualquier concepto incurran los favorecidos en la presente Promoción para participar en la
+					misma, así como para el traslado y otros gastos para reclamar o retirar o gozar del Premio, en su
+					caso, serán a exclusivo cargo del adjudicatario del Premio.
+				</Text>
+				<Text style={styles.subtitle}>11.- Responsabilidades:</Text>
+				<Text style={styles.text}>
+					El Organizador no será responsable por los daños o perjuicios que pudiere sufrir el Ganador, o los
+					terceros, o las personas que hagan uso del Premio con motivo o en ocasión de la participación en la
+					presente Promoción o en ocasión de la utilización del Premio. La responsabilidad del Organizador
+					finalizará con la entrega del Premio al Ganador, no siendo responsable por eventuales fallas en los
+					sistemas informáticos o telefónicos dispuestos para la recepción de datos para participar, ni por el
+					mal funcionamiento de los equipos de computación o de telefonía utilizados por los Participantes
+					para el ingreso de los datos para participar.
+				</Text>
+				<Text style={styles.subtitle}>12.- Suspensión, modificaciones, cancelación:</Text>
+				<Text style={styles.text}>
+					El Organizador podrá ampliar la cantidad de premios ofrecidos o el plazo de vigencia de la
+					Promoción. Cuando circunstancias no imputables al Organizador o no previstas en estas Bases o que
+					constituyan caso fortuito o fuerza mayor lo justifiquen, el Organizador podrá suspender, cancelar o
+					modificar la Promoción.
+				</Text>
+				<Text style={styles.subtitle}>13.- Aceptación de Bases y Condiciones:</Text>
+				<Text style={styles.text}>
+					Quienes participen en esta Promoción aceptan de pleno derecho todas y cada una de las disposiciones
+					descriptas en estas Bases.
+				</Text>
+				<Text style={styles.subtitle}>14.- Disponibilidad:</Text>
+				<Text style={styles.text}>
+					Las presentes Bases podrán ser consultadas por cualquier interesado en www.pedilealosandes.com.ar
+				</Text>
+				<Text style={styles.subtitle}>15.- Autorización:</Text>
+				<Text style={styles.text}>
+					Los Participantes autorizan expresamente al Organizador a captar y utilizar sus datos, nombres,
+					números de documentos, imágenes personales, video y voces de estos últimos con fines publicitarios y
+					promocionales en cualquier medio de comunicación, ya sea televisivo, cinematográfico, radial,
+					gráfico, Internet, etc., en la forma en que el Organizador considere más conveniente y sin que esto
+					genere derecho a compensación de ninguna especie, por un plazo de veinticuatro (24) meses contados
+					desde la finalización del Plazo de Vigencia de la Promoción.
+				</Text>
+				<Text style={styles.subtitle}>16.- Datos personales:</Text>
+				<Text style={styles.text}>
+					Los datos personales brindados por los Participantes para la participación en esta Promoción, serán
+					objeto de tratamiento automatizado e incorporado a la base de datos de titularidad de Cervecería y
+					Maltería Quilmes S.A.I.C.A. y G, con domicilio constituido a los efectos de la presente Promoción,
+					en la calle Charcas 5160, Ciudad de Buenos Aires. La provisión de los datos por parte de los
+					Participantes de la Promoción es voluntaria, sin perjuicio de ser un requisito necesario para
+					participar en la Promoción.~{'\n'}
+					El titular de los datos personales o sus representantes legales tienen la facultad de ejercer el
+					derecho de acceso a los mismos en forma gratuita a intervalos no inferiores a seis meses, salvo que
+					se acredite un interés legítimo al efecto conforme lo establecido en el artículo 14, inciso 3 de la
+					Ley Nº 25.326.~{'\n'}
+					Los Participantes podrán requerir que dicha información le sea suministrada, actualizada,
+					rectificada o removida de la base de datos a su pedido. A tales efectos, el Participante podrá
+					comunicarse al 0-800-222- 378392.~{'\n'}
+					La Agencia de Acceso a la Información Pública, órgano de control de la Ley Nº 25.326 tiene la
+					atribución de atender las denuncias y reclamos que se interpongan con relación al incumplimiento de
+					las normas sobre protección de datos personales.~{'\n'}
+					El registro y participación de la Promoción implicará el otorgamiento por parte del Participante,
+					del consentimiento previsto en los artículos 5º y 11º de la Ley 25.326.
+				</Text>
+				<Text style={styles.subtitle}>17.- Ley aplicable y Jurisdicción:</Text>
+				<Text style={styles.text}>
+					Toda relación que en virtud de la Promoción se genere entre el Participante y el Organizador será
+					regida y concertada con total sujeción a las leyes de la República Argentina, renunciando el
+					Participante a cualquier otra ley a cuya aplicación pudiera tener derecho. Para cualquier cuestión
+					judicial que pudiera derivarse de la realización de la Promoción, los Participantes y el Organizador
+					se someterán a la jurisdicción de los tribunales ordinarios competentes con asiento en la Ciudad de
+					Buenos Aires.
+				</Text>
+				<Text style={styles.subtitle}>BEBER CON MODERACIÓN. PROHIBIDA SU VENTA A MENORES DE 18 AÑOS.</Text>
+
+				<Text style={styles.subtitle}>Anexo I – Puntos de activación</Text>
+				<Text style={styles.text}>
+					Go Bar Viamonte (Viamonte, M5505 Chacras de Coria, Mendoza)~{'\n'}
+					Go Bar Mayorista Rodríguez (Cnel Rodríguez 604, M5500 Mendoza)~{'\n'}
+					Central de Bebidas (Viamonte 5181, M5505 Chacras de Coria, Mendoza)~{'\n'}
+					Supermercado Átomo (Bolougne Sur Mer y regalado Olguin Las Heras)~{'\n'}
+					Supermercado Átomo (San Martin 2430 Las Heras)~{'\n'}
+					La Fuente del Parque (Parque General San Martín. Fuente de los continentes)~{'\n'}
+					El Asadito- Juan B. Justo (5500, Av. Juan B. Justo 512, M5500 DQK, Mendoza)~{'\n'}
+					Punta del Lago (Avenida del Trabajo, Parque General San Martín, Provincia de Mendoza, Del Trabajo,
+					Mendoza)~{'\n'}
+					El Asadito- Sarmiento (Av. Sarmiento 755, M5000 Mendoza)~{'\n'}
+					Nipoti. Palmares Open Mall (Palmares Open Mall. Godoy Cruz, Mendoza)~{'\n'}
+				</Text>
+				<Text style={styles.subtitle}>Anexo II – Centros de Canje</Text>
+				<Text style={styles.text}>
+					Amigorena. Amigorena 26 – Mendoza~{'\n'}
+					Dovir. Lavalle 255 – Mendoza~{'\n'}
+					Juan B. Justo. Juan B. Justo 395 – Mendoza~{'\n'}
+					Peru. Perú 3022~{'\n'}
+					Someca. Paraguay 2532 – Mendoza~{'\n'}
+					Castelli. Castelli 170 - Godoy Cruz~{'\n'}
+					Cervantes. Cervantes 1560~{'\n'}
+					Cisne. Elpidio Gonzalez 2890 - Jesus Nezareno - Godoy Cruz~{'\n'}
+					Covimet. Sarmiento D.F. 2115 - Godoy Cruz~{'\n'}
+					Estanzuela. B° D.P. de Huisi Mna 10 Csa 1 - Godoy Cruz~{'\n'}
+					Jardin Serrano. Villa Mercedes 886 - Godoy Cruz~{'\n'}
+					Nuevo Marini. Rivadavia 1653 - Godoy Cruz~{'\n'}
+					Perito Moreno. Perito Moreno 1016 - Godoy Cruz~{'\n'}
+					Sportman. Paso de los Andes 1634 - Godoy Cruz~{'\n'}
+					Avellaneda. Capilla de Nieve 4056 – Guaymallen~{'\n'}
+					Buena Nueva. Godoy Cruz 6470 - Villanueva - Guaymallen~{'\n'}
+					Cano. Godoy Cruz 535 - San Jose - Guaymallen~{'\n'}
+					Cap. Del Rosario. Capilla del Rosario s/n Villanueva - Guaymallen~{'\n'}
+					Correa Saa. Benjamin Matienzo 1481~{'\n'}
+					Don Bosco. Cervantes 1585 - San Jose - Guaymallen~{'\n'}
+					Elpidio Gonzalez. Elpidio Gonzalez s/n Jesus Nazareno - Guaymallen~{'\n'}
+					Gutemberg. Gutemberg 2652 - San Jose - Guaymallen~{'\n'}
+					Nvo. Dorrego. Gualberto Godoy 314 - Dorrego - Guaymallen~{'\n'}
+					Paddle. Tito Laciar 925 - Villanueva - Guaymallen~{'\n'}
+					Pedro Molina. Besares 2399 - San Jose - Guaymallen~{'\n'}
+					Santa Ana. Fader s/n Villanueva - Guaymallen~{'\n'}
+					Unimev. Pedro Vargas s/n - Guaymallen~{'\n'}
+					Algarrobal. Aristobulo del Valle s/n - Las Heras~{'\n'}
+					Bosque. Peru 202 - Las Heras~{'\n'}
+					Central. San Martin 2430 - Las Heras~{'\n'}
+					Frimi II. San Martin 241 - Las Heras~{'\n'}
+					Frimi IV. Trapiche s/n - Las Heras~{'\n'}
+					Independencia. Independencia 2368 - Las Heras~{'\n'}
+					Lisandro Moyano. Lisandro Moyano 528 - Las Heras~{'\n'}
+					Martin Fierro. Martin Fierro 906 - Las Heras~{'\n'}
+					Olascoaga. Olascoaga 2550 esq Indepencia - Las Heras~{'\n'}
+					Padre Llorens. Calle sin nombre s/n Las Heras ~{'\n'}
+					Raiz. Acceso Aeroparque s/n - Las Heras~{'\n'}
+					Rotonda. Boulogne Sur Mer s/n - Las Heras~{'\n'}
+					San Miguel. San Miguel 750 - Las Heras~{'\n'}
+					Trome. Julio A. Roca s/n esquina Islas Malvinas - Las Heras~{'\n'}
+					Uspallata. Ruta Nacional Nº7 1748 - Las Heras~{'\n'}
+					Alvear Oeste. Av. Alvear Oeste 720 - Gral. Alvear~{'\n'}
+					Bowen. Sarmiento s/n - Bowen - Gral. Alvear~{'\n'}
+					Fatima. Alem Norte - Gral. Alvear~{'\n'}
+					General Alvear. San Rafael 293 - Gral Alvear~{'\n'}
+					Costa Araujo II. Daniel Guardi s/n - Costa de Araujo~{'\n'}
+					Lavalle. Belgrano 155 - Lavalle~{'\n'}
+					Tulumaya. Dr. Moreno 351 - Lavalle~{'\n'}
+					Carrodilla. Calle sin nombre s/n - Lujan de Cuyo~{'\n'}
+					Estacion. Siria s/n - Lujan de Cuyo~{'\n'}
+					Lujan. Roque Saenz Peña 784 - Lujan de Cuyo~{'\n'}
+					Perdriel. Ruta 15 s/n - Lujan de Cuyo~{'\n'}
+					Vistalba. Roque Saenz Peña 1990 - Lujan de Cuyo~{'\n'}
+					Ugarteche. Ruta Nac Nº 40 y Ruta Nac. 30 (interseccion)~{'\n'}
+					Beltran. Mariano Moreno Norte 450 - Maipu~{'\n'}
+					Giol. Lavalle 270 - Maipu~{'\n'}
+					Luzuriaga. 9 de Julio s/n - Luzuriaga - Maipu~{'\n'}
+					Maipu. Patricias Argentinas 377 - Maipu~{'\n'}
+					Rodeo del Medio. Ruta provincial N° 50 s/n - Maipu~{'\n'}
+					Tropero Sosa. Tropero Sosa 441 - Maipu~{'\n'}
+					Aca. 9 de Julio 76 - San Rafael~{'\n'}
+					Ballofet. Ballofet 858 - San Rafael~{'\n'}
+					Ballofet Sur. Ballofet 2700 - San Rafael~{'\n'}
+					Comodoro Pi. Comodoro Py 407 - San Rafael~{'\n'}
+					Constitucion. Emilio Mitre 559 - San Rafael~{'\n'}
+					Diamante. Av. Mitre 1120 - San Rafael~{'\n'}
+					Imprenta. 25 de Mayo - San Rafael~{'\n'}
+					Javi. Av. Rivadavia 660 - San Rafael ~{'\n'}
+					Malargue. Hipolito Yrigiyen 50 - San Rafael~{'\n'}
+					Rafaelito. Av Alberdi 290 - San Rafael~{'\n'}
+					Salto de las Rosas. Ruta Nacional 143 s/n - Salto de las Rosas - San Rafael~{'\n'}
+					Eugenio Bustos. San Martin 202 - Eugenio Bustos~{'\n'}
+					Nvo Consulta. B. Vilegas Norte 181 - La Consulta~{'\n'}
+					Nvo. Tupungato. Las Heras 1050 - Tupungato~{'\n'}
+					Tunuyan. Lavalle 88 - Tunuyan~{'\n'}
+					Tunuyan II. Ruta Nacional 40 s/n - Tunuyan~{'\n'}
+					Tupungato. Belgrano 80 - Tupungato~{'\n'}
+					Vista Flores. San Martin s/n - Vista Flores~{'\n'}
+					Don Faustino. Avellaneda 225 - San Martin~{'\n'}
+					Junin. Mitre 969 - Villa Junin~{'\n'}
+					Palmira. Libertador 1465 - Palmira - San Martin~{'\n'}
+					Rivadavia II. Lavalle 453 - Rivadavia~{'\n'}
+					Rivadavia III. Rufino Ortega - Rivadavia~{'\n'}
+					Terminal. Tucuman II - San Martin~{'\n'}
+					Catitas. Ex Ruta 7 Prov. 50 N° 2835 - Catitas~{'\n'}
+					Colonia. Isidoro Busquet 702 - La Colonia, Junin~{'\n'}
+					Barriales. Libert. G San Martín 467~{'\n'}
+					Go Bar Viamonte, Chacras de Coria. Viamonte, M5505 Chacras de Coria, Mendoza~{'\n'}
+					Go Bar Mayorista Rodríguez. Cnel Rodríguez 604, M5500 Mendoza~{'\n'}
+					Go Bar Casa Central. Perito Moreno 2455, M5500 Mendoza
+				</Text>
 				<Text style={styles.title}>TERMINOS Y CONDICIONES</Text>
 				<Text style={styles.text}>
 					Este sitio Web denominado (en adelante el "Sitio") es operado por Cervecería y Maltería Quilmes
