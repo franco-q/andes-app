@@ -7,6 +7,7 @@ import {
 	PermissionsAndroid,
 	NativeModules,
 	SafeAreaView,
+	KeyboardAvoidingView,
 	Animated
 } from 'react-native'
 import Login from './components/Login'
@@ -19,40 +20,12 @@ import * as Animatable from 'react-native-animatable'
 
 import interpolate from 'color-interpolate'
 
-let ch0 = interpolate(['#000', '#820000', '#828282', '#820000', '#000'])
-let ch1 = interpolate(['#000', '#820000', '#828282', '#820000', '#000'])
-let ch2 = interpolate(['#000', '#820000', '#828282', '#820000', '#000'])
-let ch3 = interpolate(['#000', '#820000', '#828282', '#820000', '#000'])
-let ch4 = interpolate(['#000', '#820000', '#828282', '#820000', '#000'])
-let ch5 = interpolate(['#000', '#820000', '#828282', '#820000', '#000'])
-
-var style = StyleSheet.create({
-	bg: {
-		flex: 1,
-		marginTop: 'auto'
-	},
-	main: {
-		alignSelf: 'center',
-		width: 920,
-		height: 800
-	},
-	header: {
-		height: 80,
-		justifyContent: 'center',
-		alignItems: 'flex-start'
-	},
-	footer: {
-		height: 57,
-		alignItems: 'center',
-		justifyContent: 'center'
-	},
-	footerTxt: {
-		fontFamily: 'Gotham-Book',
-		textAlign: 'center',
-		fontSize: 16,
-		color: '#FFF'
-	}
-})
+let ch0 = interpolate(['#000000', '#FF0000', '#828282', '#FF0000', '#000000'])
+let ch1 = interpolate(['#000000', '#FF0000', '#828282', '#FF0000', '#000000'])
+let ch2 = interpolate(['#000000', '#FF0000', '#828282', '#FF0000', '#000000'])
+let ch3 = interpolate(['#000000', '#FF0000', '#828282', '#FF0000', '#000000'])
+let ch4 = interpolate(['#000000', '#FF0000', '#828282', '#FF0000', '#000000'])
+let ch5 = interpolate(['#000000', '#FF0000', '#828282', '#FF0000', '#000000'])
 
 const back_mountains = require('./assets/mountains-bg.png')
 
@@ -102,10 +75,12 @@ const App = () => {
 
 	const login = ({ name, borndate, city, email, beer }) => {
 		setUserData({ name, borndate, city, email, beer })
-		let _date = new Date()
-		let tstamp = `${_date.getFullYear()}/${(_date.getMonth() + 1)}/${_date.getDate()} ${_date.getHours()}/${_date.getMinutes()}/${_date.getSeconds()}`
+		let d = new Date()
+		let tstamp = `${d.getFullYear()}/${
+			d.getMonth() + 1
+		}/${d.getDate()} ${d.getHours()}/${d.getMinutes()}/${d.getSeconds()}`
 		NativeModules.AndesHelperModule.saveData([tstamp, name, borndate, city, email, beer].join(','), () => {})
-		$Img.current.fadeOut(200).then(() => {})
+		$Img.current.fadeOut(200)
 		$Main.current.fadeOutDown(200).then(() => {
 			setPlay(true)
 		})
@@ -149,51 +124,14 @@ const App = () => {
 
 	function endArnet() {
 		AnimationLoop.stop()
-		NativeModules.AndesHelperModule.sendBroadcast([
-			'0',
-			'0',
-			'0',
-			'0',
-			'0',
-			'0',
-			'0',
-			'0',
-			'0',
-			'0',
-			'0',
-			'0',
-			'0',
-			'0',
-			'0',
-			'0',
-			'0',
-			'0'
-		])
+		NativeModules.AndesHelperModule.sendBroadcast(Array.from(Array(18).keys()).map(() => '0'))
 	}
 
 	useEffect(() => {
-		NativeModules.AndesHelperModule.sendBroadcast([
-			'0',
-			'0',
-			'0',
-			'0',
-			'0',
-			'0',
-			'0',
-			'0',
-			'0',
-			'0',
-			'0',
-			'0',
-			'0',
-			'0',
-			'0',
-			'0',
-			'0',
-			'0'
-		])
 		if (!play) {
-			AnimationLoop.start()
+			AnimationLoop.start(() => {
+				NativeModules.AndesHelperModule.sendBroadcast(Array.from(Array(18).keys()).map(() => '0'))
+			})
 		}
 	}, [play])
 
@@ -218,23 +156,31 @@ const App = () => {
 					}}
 				/>
 				<View style={style.main}>
-					<View style={style.header}>
-						<Brand width={90} height={20} />
-					</View>
-					<GridAnimatable ref={$Main} delay={1}>
-						<Row>
-							{play ? (
-								<Flow userData={userData} setBg={setMountain} onEnd={end} />
-							) : (
-								<Login onLogin={login} onReadTC={() => setShowTC(true)} stopAnimation={endArnet} />
-							)}
-						</Row>
-					</GridAnimatable>
-					<View style={style.footer}>
-						<Text style={style.footerTxt}>
-							BEBER CON MODERACIÓN. PROHIBIDA SU VENTA A MENORES DE 18 AÑOS.
-						</Text>
-					</View>
+					<KeyboardAvoidingView behavior={'padding'} style={{ flex: 1 }}>
+						<View style={style.header}>
+							<Brand width={90} height={20} />
+						</View>
+						<View style={{ height: 470 }}>
+							<GridAnimatable ref={$Main} delay={1}>
+								<Row>
+									{play ? (
+										<Flow userData={userData} setBg={setMountain} onEnd={end} />
+									) : (
+										<Login
+											onLogin={login}
+											onReadTC={() => setShowTC(true)}
+											stopAnimation={endArnet}
+										/>
+									)}
+								</Row>
+							</GridAnimatable>
+						</View>
+						<View style={style.footer}>
+							<Text style={style.footerTxt}>
+								BEBER CON MODERACIÓN. PROHIBIDA SU VENTA A MENORES DE 18 AÑOS.
+							</Text>
+						</View>
+					</KeyboardAvoidingView>
 				</View>
 			</Animatable.View>
 			{showTC && (
@@ -247,3 +193,31 @@ const App = () => {
 }
 
 export default App
+
+var style = StyleSheet.create({
+	bg: {
+		flex: 1,
+		marginTop: 'auto'
+	},
+	main: {
+		alignSelf: 'center',
+		width: 920,
+		flex: 1
+	},
+	header: {
+		flex: 1,
+		justifyContent: 'center',
+		alignItems: 'flex-start'
+	},
+	footer: {
+		flex: 1,
+		alignItems: 'center',
+		justifyContent: 'center'
+	},
+	footerTxt: {
+		fontFamily: 'Gotham-Book',
+		textAlign: 'center',
+		fontSize: 16,
+		color: '#FFF'
+	}
+})

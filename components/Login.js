@@ -1,7 +1,6 @@
 import React, { useState } from 'react'
-import { StyleSheet, Text, TextInput, TouchableOpacity, KeyboardAvoidingView, Keyboard, Platform } from 'react-native'
+import { StyleSheet, Text, TextInput, TouchableOpacity, Keyboard, View } from 'react-native'
 import Svg, { Path } from 'react-native-svg'
-import { Row, Grid } from 'react-native-easy-grid'
 import DateTimePicker from '@react-native-community/datetimepicker'
 
 const styles = StyleSheet.create({
@@ -17,7 +16,7 @@ const styles = StyleSheet.create({
 		borderWidth: 2,
 		borderRadius: 20,
 		textAlign: 'center',
-		marginBottom: 10
+		marginVertical: 5
 	},
 	conditions: {
 		fontFamily: 'Gotham-Book',
@@ -25,7 +24,7 @@ const styles = StyleSheet.create({
 		textAlign: 'center',
 		fontSize: 16,
 		color: '#FFF',
-		marginBottom: 20
+		marginBottom: 15
 	},
 	appButtonContainer: {
 		height: 46,
@@ -47,6 +46,7 @@ const styles = StyleSheet.create({
 		width: 311,
 		textAlign: 'center',
 		fontSize: 30,
+		paddingVertical: 10,
 		color: '#FFF'
 	},
 	row: {
@@ -84,82 +84,85 @@ export default function ({ onLogin, onReadTC, stopAnimation }) {
 	}
 
 	return (
-		<Grid>
-			<Row height={180} style={styles.row}>
+		<View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+			<View style={styles.row}>
 				<Text style={styles.headerTxt}>Registrate y empezá a participar</Text>
-			</Row>
-			<Row height={300} style={styles.row}>
-				<KeyboardAvoidingView behavior={'padding'} contentContainerStyle={{ flex: 1 }}>
-					<TextInput
-						placeholder={'Nombre y apellido'}
-						placeholderTextColor={'#FFF'}
-						style={styles.input}
-						onFocus={() => stopAnimation()}
-						onChangeText={val => (val ? setName(val) : setName())}
-						value={name}
-						disableFullscreenUI
-						onSubmitEditing={Keyboard.dismiss}
+			</View>
+			<View style={styles.row}>
+				<TextInput
+					placeholder={'Nombre y apellido'}
+					placeholderTextColor={'#FFF'}
+					style={styles.input}
+					onFocus={() => stopAnimation()}
+					onChangeText={val => (val ? setName(val) : setName())}
+					value={name}
+					disableFullscreenUI
+					onSubmitEditing={Keyboard.dismiss}
+				/>
+				<TouchableOpacity onPress={showDatepicker}>
+					<Text style={[styles.input, { textAlignVertical: 'center', lineHeight: 40 }]}>
+						{borndate || 'Fecha de nacimiento'}
+					</Text>
+				</TouchableOpacity>
+				{show && (
+					<DateTimePicker
+						maximumDate={new Date().setFullYear(new Date().getFullYear() - 18)}
+						value={date}
+						mode={'date'}
+						onChange={onChangeDP}
 					/>
-					<TouchableOpacity onPress={showDatepicker}>
-						<Text style={[styles.input, { textAlignVertical: 'center', lineHeight: 40 }]}>
-							{borndate || 'Fecha de nacimiento'}
-						</Text>
-					</TouchableOpacity>
-					{show && (
-						<DateTimePicker
-							maximumDate={new Date().setFullYear(new Date().getFullYear() - 18)}
-							value={date}
-							mode={'date'}
-							onChange={onChangeDP}
-						/>
-					)}
-					<TextInput
-						placeholder={'Localidad'}
-						placeholderTextColor={'#FFF'}
-						style={styles.input}
-						onFocus={() => stopAnimation()}
-						onChangeText={val => (val ? setCity(val) : setCity())}
-						value={city}
-						disableFullscreenUI
-						onSubmitEditing={Keyboard.dismiss}
-					/>
-					<TextInput
-						placeholder={'Mail'}
-						keyboardType={'email-address'}
-						placeholderTextColor={'#FFF'}
-						style={styles.input}
-						onFocus={() => stopAnimation()}
-						onChangeText={val => (val ? setEmail(val) : setEmail())}
-						value={email}
-						disableFullscreenUI
-						onSubmitEditing={Keyboard.dismiss}
-					/>
-					<TextInput
-						placeholder={'Cerveza preferida'}
-						placeholderTextColor={'#FFF'}
-						style={styles.input}
-						onFocus={() => stopAnimation()}
-						onChangeText={val => (val ? setBeer(val) : setBeer())}
-						value={beer}
-						disableFullscreenUI
-						onSubmitEditing={Keyboard.dismiss}
-					/>
-				</KeyboardAvoidingView>
-			</Row>
-			<Row height={180} style={styles.row}>
+				)}
+				<TextInput
+					placeholder={'Localidad'}
+					placeholderTextColor={'#FFF'}
+					style={styles.input}
+					onFocus={() => stopAnimation()}
+					onChangeText={val => (val ? setCity(val) : setCity())}
+					value={city}
+					disableFullscreenUI
+					onSubmitEditing={Keyboard.dismiss}
+				/>
+				<TextInput
+					placeholder={'Mail'}
+					keyboardType={'email-address'}
+					placeholderTextColor={'#FFF'}
+					style={styles.input}
+					onFocus={() => stopAnimation()}
+					onChangeText={val => (val ? setEmail(val) : setEmail())}
+					value={email}
+					disableFullscreenUI
+					onSubmitEditing={Keyboard.dismiss}
+				/>
+				<TextInput
+					placeholder={'Cerveza preferida'}
+					placeholderTextColor={'#FFF'}
+					style={styles.input}
+					onFocus={() => stopAnimation()}
+					onChangeText={val => (val ? setBeer(val) : setBeer())}
+					value={beer}
+					disableFullscreenUI
+					onSubmitEditing={Keyboard.dismiss}
+				/>
+			</View>
+			<View style={[styles.row, { paddingVertical: 10 }]}>
 				<TouchableOpacity onPress={onReadTC}>
 					<Text style={styles.conditions}>
 						Acepto términos y condiciones, políticas de privacidad y activaciones de marketing.
 					</Text>
 				</TouchableOpacity>
-				{name && borndate && city && email && beer && (
-					<TouchableOpacity onPress={checkIt} style={styles.appButtonContainer}>
-						<Svg viewBox={'0 0 30 20'} height={20} width={30}>
-							<Path fill={'#FFF'} d={'M12.7,18L3,8.3l1.5-1.5l8.1,8.1L25.4,2L27,3.6L12.7,18z'} />
-						</Svg>
-					</TouchableOpacity>
-				)}
-			</Row>
-		</Grid>
+				{name &&
+					borndate &&
+					city &&
+					email &&
+					/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email) &&
+					beer && (
+						<TouchableOpacity onPress={checkIt} style={styles.appButtonContainer}>
+							<Svg viewBox={'0 0 30 20'} height={20} width={30}>
+								<Path fill={'#FFF'} d={'M12.7,18L3,8.3l1.5-1.5l8.1,8.1L25.4,2L27,3.6L12.7,18z'} />
+							</Svg>
+						</TouchableOpacity>
+					)}
+			</View>
+		</View>
 	)
 }
